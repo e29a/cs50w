@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Search</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <nav class="topnav b">
-            <a href="index.html"><img src="images/googlelogo_color_272x92dp.png" alt="Back to google home" width="100px"></a>
-            <a href="image.html">Image Search</a>
-        </nav>
-        <section>
-            <h1 class="header">Advanced Search</h1>
-            <hr>
+
+<head>
+    <title>Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="topnav b">
+        <a href="index.html"><img src="images/googlelogo_color_272x92dp.png" alt="Back to google home"
+                width="100px"></a>
+        <a href="image.html">Image Search</a>
+    </nav>
+    <section>
+        <h1 class="header">Advanced Search</h1>
+        <hr>
+        <form action="https://google.com/search">
             <div style="padding: 20px;">
                 <table>
                     <tr>
@@ -20,23 +24,28 @@
                     </tr>
                     <tr>
                         <td>This exact word or phrase:</td>
-                        <td><input class="advanced-search" type="text" name="as-q" id=""></td>
+                        <td><input class="advanced-search" type="text" name="as_epq" id=""></td>
                     </tr>
                     <tr>
                         <td>Any of these words:</td>
-                        <td><input class="advanced-search" type="text" name="as-q" id=""></td>
+                        <td><input class="advanced-search" type="text" name="as_oq" id=""></td>
                     </tr>
                     <tr>
                         <td>None of these words:</td>
-                        <td><input class="advanced-search" type="text" name="as-q" id=""></td>
+                        <td><input class="advanced-search" type="text" name="as_eq" id=""></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="right"><button style="background-color: rgb(101, 101, 255); color: white;">Advanced Search</button></td>
+                        <td class="right">
+                            <button type="submit" class="button"
+                                style="background-color: rgb(101, 101, 255); color: white;">Advanced Search</button>
+                        </td>
                     </tr>
                 </table>
-                
+
             </div>
-        </section>
-    </body>
+        </form>
+    </section>
+</body>
+
 </html>
