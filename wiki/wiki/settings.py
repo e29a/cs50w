@@ -27,10 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8000-e29a-cs50w-ybezv4x5jgz.ws-eu104.gitpod.io']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-e29a-cs50w-ybezv4x5jgz.ws-eu104.gitpod.io',
+    # Add any other allowed origins here
+]
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'encyclopedia',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -99,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
