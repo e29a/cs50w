@@ -100,7 +100,7 @@ def edit(request, entry):
         content = form.cleaned_data.get("content")
 
         util.save_entry(title=title, content=content)
-        return redirect("wiki", title)
+        return HttpResponseRedirect("/wiki/{}".format(title))
 
 def random(request):
     entries = util.list_entries()
