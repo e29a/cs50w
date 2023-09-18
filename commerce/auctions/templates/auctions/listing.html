@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ listing.listing_title }}</h2>
+    {% if listing.listing_status == "open" %}
+    <img src="{{ listing.listing_image }}" alt="image" style="width: 50%;">
+    <br>
+    <p>{{ listing.listing_description }}</p>
+    {% if user.is_authenticated %}
+    {% if iswatchlist == "yes" %}
+    <a href="/rmWatchlist/{{ listing.id }}">
+        <button type="button" class="btn">Remove From Watchlist</button>
+    </a>
+    {% else %}
+    <a href="/addWatchlist/{{ listing.id }}">
+        <button type="button" class="btn">Add To Watchlist</button>
+    </a>
+    {% endif %}
+    {% if user.id == listing.listing_author_id %}
+    <a href="/close/{{ listing.id }}">
+        <button type="button" class="btn">Close Listing</button>
+    </a>
+    {% endif %}
+    {% endif %}
+    <br><br>
+    <h3>Current Price: {{ listing.listing_price }}</h3>
+    <form class="row g-3" action="/bid/{{ listing.id }}">
+        {% csrf_token %}
+        <div class="col-auto">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Place a bid">
+        </div>
+        <div class="col-auto">
+            <input type="number" name="amount" class="form-control" id="bid" placeholder="{{ listing.listing_price }}">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Place</button>
+        </div>
+    </form>
+    
+    <h3>Comments</h3>
+    <form action="/comment/{{ listing.id }}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Write a comment</label>
+            <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn">Post</button>
+    </form>
+    {% for comment in comments %}
+    <div style="padding: 20px;">
+        <blockquote>{{ comment.comment_content }} - {{ comment.comment_user_id }}</blockquote>
+    </div>
+    {% empty %}
+    No comments.
+    {% endfor %}
+    {% else %}
+    <h3>This listing was won by {{ listing.listing_winner }} at {{listing.listing_price}}</h3>
+    {% endif %}
+{% endblock %}

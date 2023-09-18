@@ -25,7 +25,8 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['8000-e29a-cs50w-ybezv4x5jgz.ws-eu104.gitpod.io']
+CSRF_TRUSTED_ORIGINS = ['https://8000-e29a-cs50w-ybezv4x5jgz.ws-eu104.gitpod.io']
 
 
 # Application definition
