@@ -15,6 +15,7 @@ function view_email(id) {
   document.querySelector('#email-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
+  document.querySelector('#email-view').innerHTML = ' ';
   fetch('/emails/' + id)
     .then(response => response.json())
     .then(email => {
@@ -31,16 +32,10 @@ function view_email(id) {
         document.querySelector('#email-view').innerHTML += `
         <div class="email-contaner">
         <p><strong>Sender</strong>: ${email.sender} </p>
-        <p><strong>Recipient</strong>: ${email.recipient} </p>
+        <p><strong>Recipient</strong>: ${email.recipients} </p>
         <p><strong>Timestamp</strong>: ${email.timestamp} </p>
         <p><strong>Subject</strong>: ${email.subject} </p>
-
-        <br><br>
-
         <p><strong>Body</strong>:<br> ${email.body} </p>
-
-        <br><br>
-
         <button class='btn btn-outline-primary' onclick="reply_email(${email.id})">Reply</p>
         <button class='btn btn-outline-primary' onclick="archive_email(${email.id})">Archive</p>
         </div>
@@ -50,16 +45,10 @@ function view_email(id) {
         document.querySelector('#email-view').innerHTML += `
         <div class="email-contaner">
         <p><strong>Sender</strong>: ${email.sender} </p>
-        <p><strong>Recipient</strong>: ${email.recipient} </p>
+        <p><strong>Recipient</strong>: ${email.recipients} </p>
         <p><strong>Timestamp</strong>: ${email.timestamp} </p>
         <p><strong>Subject</strong>: ${email.subject} </p>
-
-        <br><br>
-
         <p><strong>Body</strong>:<br> ${email.body} </p>
-
-        <br><br>
-
         <button class='btn btn-outline-primary' onclick="reply_email(${email.id})">Reply</p>
         <button class='btn btn-outline-primary' onclick="unarchive_email(${email.id})">Unarchive</p>
         </div>
@@ -100,10 +89,8 @@ function compose_email() {
       .then(response => response.json())
       .then(result => {
         console.log(result);
-      });
-
-    return load_mailbox('sent');
-
+      })
+      .then(() => load_mailbox("sent"));
   })
 }
 
@@ -154,8 +141,7 @@ function archive_email(id) {
     body: JSON.stringify({
       archived: true
     })
-  })
-  load_mailbox('inbox');
+  }).then(() => load_mailbox("inbox"));
 }
 
 function unarchive_email(id) {
@@ -164,8 +150,7 @@ function unarchive_email(id) {
     body: JSON.stringify({
       archived: false
     })
-  })
-  load_mailbox('inbox');
+  }).then(() => load_mailbox("inbox"));
 }
 
 function reply_email(id) {
@@ -201,12 +186,11 @@ function reply_email(id) {
           .then(response => response.json())
           .then(result => {
             console.log(result);
-          });
-
-        return load_mailbox('sent');
-
+          })
+          
+          .then(() => load_mailbox("sent"));
       })
-    });
+    })
 }
 
 
