@@ -1,0 +1,34 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<h2>{{ user.username }}</h2>
+<p>{{ followers }} Followers - {{ following }} Following</p>
+<button class="btn btn-primary">Follow</button>
+
+<br>
+<br>
+
+<!-- post box -->
+{% for post in posts %}
+<div class="post card mt-2">
+    <div class="card-body">
+        <h5>{{ post.author }}</h5>
+        <p> {{ post.content }} </p>
+        <p class="text-muted">{{ post.timestamp }}</p>
+        <p class="text-muted"
+           style="border: 1px solid silver; 
+                   border-radius: 50px; 
+                   width: 10%; 
+                   padding: 5px; 
+                   text-align: center;">
+            &#10084; {{ post.likes }}
+        </p>
+    </div>
+</div>
+{% empty %}
+No Posts to load.
+{% endfor %}
+
+
+{% endblock %}

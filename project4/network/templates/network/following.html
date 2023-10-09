@@ -2,21 +2,9 @@
 
 {% block body %}
 <!-- new post box -->
-<div class="new-post card mb-5">
-    <div class="card-body">
-        <h5>New Post</h5>
-        <form action="/new" method="post">
-            {% csrf_token %}
-            <div class="mb-2">
-                <label for="exampleFormControlTextarea1" class="form-label">What's on your mind, {{ user.username }} ?</label>
-                <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <button type="submit" class="btn btn-outline-primary">Post</button>
-            </div>
-        </form>
-    </div>
-</div>
+<h1>Following</h1>
+
+<br><br>
 
 <!-- post box -->
 {% for post in posts %}
@@ -28,14 +16,14 @@
         <p> {{ post.content }} </p>
         <p class="text-muted">{{ post.timestamp }}</p>
         <div style="display: flex;">
-            <p class="text-muted"  onclick="like_post('{{ post.id }}');"
+            <p class="text-muted"
             style="border: 1px solid silver; 
                     border-radius: 50px; 
                     width: 12%; 
                     padding: 2px; 
                     text-align: center;
                     margin-right: 10px;">
-                <a href=""> &#10084; <span id="like-no-{{ post.id }}">{{ post.likes }}</span></a>
+                <a href=""> &#10084; {{ post.likes }} </a>
             </p>
             {% if post.author == user.username %}
                 <p class="text-muted" id="edit-btn"
