@@ -4,8 +4,13 @@
 
 <h2>{{ user.username }}</h2>
 <p>{{ followers }} Followers - {{ following }} Following</p>
-<button class="btn btn-primary">Follow</button>
-
+{% if request.user.username != user.username %}
+{% if is_following %}
+<button class="btn btn-primary"><a href="/unfollow/{{ user.username }}">Unfollow</a></button>
+{% else %}
+<button class="btn btn-primary"><a href="/follow/{{ user.username }}">Follow</a></button>
+{% endif %}
+{% endif %}
 <br>
 <br>
 

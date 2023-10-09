@@ -28,14 +28,16 @@
         <p> {{ post.content }} </p>
         <p class="text-muted">{{ post.timestamp }}</p>
         <div style="display: flex;">
-            <p class="text-muted"  onclick="like_post('{{ post.id }}');"
+            <p class="text-muted" onclick="like_post('{{ post.id }}');"
             style="border: 1px solid silver; 
                     border-radius: 50px; 
                     width: 12%; 
                     padding: 2px; 
                     text-align: center;
-                    margin-right: 10px;">
-                <a href=""> &#10084; <span id="like-no-{{ post.id }}">{{ post.likes }}</span></a>
+                    margin-right: 10px;
+                    cursor: pointer;">
+                    &#10084; 
+                    <span id="like-no-{{ post.id }}">{{ post.likes }}</span>
             </p>
             {% if post.author == user.username %}
                 <p class="text-muted" id="edit-btn"
@@ -44,7 +46,7 @@
                         width: 12%; 
                         padding: 2px; 
                         text-align: center;">
-                    <a href="/edit/{ post.id }"> &#9998; Edit </a>
+                    <a href="/edit/{{ post.id }}"> &#9998; Edit </a>
                 </p>
             {% endif %}
         </div>

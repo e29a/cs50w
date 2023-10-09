@@ -6,12 +6,12 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .models import *
 
 
-def index(request):
-    
+def index(request): 
     posts = Post.objects.all()
     paginator = Paginator(posts, 10)
     page_num = request.GET.get('page', 1)
@@ -27,7 +27,7 @@ def index(request):
         "posts": page_obj
     })
 
-
+@csrf_exempt
 def login_view(request):
     if request.method == "POST":
 
@@ -47,12 +47,12 @@ def login_view(request):
     else:
         return render(request, "network/login.html")
 
-
+@csrf_exempt
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+@csrf_exempt
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -79,6 +79,8 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+@csrf_exempt
+@login_required
 def new(request):
     content = request.POST['content']
     author = request.user.username
@@ -88,38 +90,47 @@ def new(request):
 
 def profile(request, user):
     user = User.objects.get(username=user)
-    posts = Post.objects.filter(author = request.user.username)
-    followers = Follow.objects.filter(following = request.user.username).count()
-    following = Follow.objects.filter(follower = request.user.username).count()
-
+    posts = Post.objects.filter(author = user)
+    followers = Follow.objects.filter(following = user).count()
+    following = Follow.objects.filter(follower = user).count()
+    is_following = False
+    for follower in Follow.objects.filter(following = user):
+        if follower.follower == request.user.username:
+            is_following = True
+        else:
+            pass
     return render(request, "network/profile.html", {
         "user" : user,
         "posts" : posts,
         "followers" : followers,
-        "following" : following
+        "following" : following,
+        "is_following": is_following
     }) 
 
+@csrf_exempt
 def edit(request, id):
     post = Post.objects.get(id=id)
     if request.method == "GET":
-        return render(request, "network/edit.html", {
-            "post": post
-        })
+        
+        if request.user.userame == post.author:
+            return render(request, "network/edit.html", {
+                "post": post
+            })
     else:
         content = request.POST["content"]
         post.content = content
         post.save()
         return HttpResponseRedirect("/")
-
+    
 def following(request):
     results = []
     followings = Follow.objects.filter(follower = request.user.username)
-    posts = Follow.objects.all()
+    posts = Post.objects.all()
 
     for post in posts:
         for following in followings:
             if post.author == following.following:
-                results.append[post]
+                results.append(post)
             else:
                 pass
     
@@ -150,30 +161,19 @@ def unfollow(request, user):
 @login_required
 def like(request, id):
     post = Post.objects.get(id=id)
-    post_likes = Like.objects.filter(post=post.id)
-    check = []
-
-    if post_likes:
-        for post_like in post_likes:
-            if post_like.user == request.user.id:
-                check.append(post_like)
-                break
-
-    if not check:
-        post.likes = post.likes + 1
+    check = Like.objects.filter(post=id, user=request.user.id)
+    if check:
+        post.likes -= 1
         post.save()
-        like = Like(user=request.user.id, post=id)
-        like.save()
+        check.delete()
+        return JsonResponse({"message": "."}, status=201)
     else:
-        post.likes = post.likes - 1
+        post.likes += 1
         post.save()
-        like = Like.objects.get(user=request.user.id, post=id)
-        like.delete()
-    
-    return JsonResponse(post.serialize())
-
-
-                
+        like = Like(post=id, user=request.user.id)
+        like.save()
+        return JsonResponse({"message": "Done."}, status=201)
+       
     
 
 

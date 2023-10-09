@@ -10,6 +10,8 @@ class Post(models.Model):
     author = models.CharField(max_length=64)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField()
+    class Meta:
+        ordering = ['-timestamp']
 
 class Follow(models.Model):
     follower = models.CharField(max_length=64)
